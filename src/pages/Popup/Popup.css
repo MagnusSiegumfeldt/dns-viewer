@@ -1,0 +1,108 @@
+body {
+  font-size: 14px !important;
+}
+.dns-section table {
+  table-layout: fixed;
+}
+.dns-section td:first-child {
+  width: 220px !important;
+  min-width: 220px !important;
+}
+.dns-section td:nth-child(2),
+.dns-section td:nth-child(3) {
+  width: 70px !important;
+  min-width: 100px !important;
+}
+.dns-section td:nth-child(4) {
+  overflow-wrap: break-word !important;
+}
+.dns-section td:nth-child(5) {
+  width: 70px !important;
+  text-align: right;
+  padding-right: 5px !important;
+}
+.info-section .info-copy-td {
+  width: 50px !important;
+}
+.table th {
+  font-size: 24px;
+  font-weight: 900;
+  padding: 0.2rem 0px 0.2rem 0.75rem !important;
+}
+.table td {
+  padding: 0.5rem 0px 0.5rem 0.75rem !important;
+}
+.dns-header {
+  background-color: transparent !important;
+  border: 0px !important;
+  border-radius: 0px !important;
+  color: #000 !important;
+  font-size: 24px !important;
+  font-weight: 800 !important;
+}
+.dns-header:focus {
+  box-shadow: none !important;
+}
+
+.dns-header-icon {
+  font-size: 14px !important;
+  vertical-align: 0em;
+}
+
+.copyBtn,
+.linkBtn {
+  background: transparent !important;
+  border: none !important;
+  padding: 0px 4px !important;
+}
+.copyBtn:focus,
+.linkBtn:focus {
+  box-shadow: none !important;
+}
+.copyBtn:hover .copyIcon,
+.linkBtn:hover .linkIcon {
+  opacity: 0.7;
+  transition: ease 0.2s;
+}
+
+.copyIcon {
+  color: #3d3d3d;
+  vertical-align: 0.05em;
+}
+.copied .copyIcon {
+  color: #006fe8 !important;
+  transition: ease-in-out 0.6s;
+}
+.copied .copyIcon {
+  opacity: 1 !important;
+}
+
+.linkIcon {
+  color: #3d3d3d;
+  vertical-align: 0.15rem;
+}
+
+.shortcut-section {
+  background: #f5f5f5;
+  display: flex;
+  justify-content: flex-end;
+}
+.shortcut-btn {
+  background: transparent !important;
+  border: none !important;
+  padding: 7px !important;
+  color: #00000080 !important;
+  font-size: 11px !important;
+  font-weight: bold !important;
+}
+.shortcut-btn:hover {
+  color: #000000af !important;
+}
+
+.nav-tabs .nav-item {
+  color: #3d3d3d;
+  font-weight: 600;
+}
+.nav-tabs .nav-item.active {
+  color: #006fe8 !important;
+}
