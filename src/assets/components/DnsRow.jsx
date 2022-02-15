@@ -47,6 +47,7 @@ export class DnsRow extends Component {
     render() {
         const typeDict = {
             1: "A",
+            2: "NS",
             5: "CNAME",
             15: "MX",
             16: "TXT"
@@ -74,7 +75,7 @@ export class DnsRow extends Component {
 
                     </Button>
                     {
-                        type == 1 || type == 5 || type == 15 ? (
+                        type == 1 || type == 2 | type == 5 || type == 15 ? (
                             <Button className="linkBtn" onClick={(e) => this.handleClick(e, "https://dnskit.dk/" + data)}>
                                 {linkIcon}
                             </Button>

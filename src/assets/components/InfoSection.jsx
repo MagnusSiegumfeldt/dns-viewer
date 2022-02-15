@@ -34,7 +34,6 @@ export class InfoSection extends Component {
     };
 
     fetchData(domain) {
-        
         if (domain.slice(-3) == ".dk"){ // Handle other top level domains
             domain = domain.match(/([a-zA-Z0-9]|-)+\.dk$/g)[0] // Strip subdomains
             this.setState({

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './Popup.css';
-import Menu from '../../assets/components/Menu';
 import ContentContainer from '../../assets/components/ContentContainer';
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -27,7 +26,6 @@ export class Popup extends Component {
     return (
       <div className="App" >
         <ContentContainer domain={this.state.domain} />
-
       </div>
     )
   };

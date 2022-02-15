@@ -1,39 +1,24 @@
 import axios from 'axios';
 import React, { Component } from 'react'
-import DnsRow from './DnsRow';
-import { Table } from 'reactstrap';
-import { Collapse, Button } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
-const openIcon = <FontAwesomeIcon className="dns-header-icon" icon={faAngleDown} />
-const closeIcon = <FontAwesomeIcon className="dns-header-icon" icon={faAngleUp} />
-
+import DnsRecordSection from './DnsRecordSection'
 
 export class DnsSection extends Component {
     state = {
         loading: true,
         domain: null,
         records: [
-            [], [], []
-        ],
-        isOpen: [
-            true, true, true
+            [], [], [], []
         ]
     };
 
-    toggle = (index) => {
-        this.setState(prevState => {
-            const isOpen = [...prevState.isOpen]
-            isOpen[index] = !isOpen[index];
-            return {
-                ...prevState,
-                isOpen: isOpen,
-            }
-        });
-    };
 
     async fetchData(domain) {
         const baseUrl = "https://dns.google/resolve?name=";
+        
+        const requestsNS = [
+            baseUrl + domain + "&type=2"
+        ]
+
         const requestsA = [
             baseUrl + domain + "&type=1",
             baseUrl + "www." + domain + "&type=1",
@@ -49,8 +34,8 @@ export class DnsSection extends Component {
         const requestsTxt = [
             baseUrl + domain + "&type=16"
         ];
-        const requestsArr = [requestsA, requestsMx, requestsTxt]
-        let promisesArr = [[], [], []];
+        const requestsArr = [requestsNS, requestsA, requestsMx, requestsTxt]
+        let promisesArr = [[], [], [], []];
 
         // Create promises
         requestsArr.forEach((requestArr, index) => {
@@ -62,13 +47,15 @@ export class DnsSection extends Component {
 
         // Read Results
         let mainLookUp = [];
-        await axios.get(baseUrl + domain + "&type=1").then(response => {
+        await axios.get(baseUrl + domain + "&type=1", { timeout: 100 }).then(response => {
             response.data.Answer.forEach(elem => {
                 mainLookUp.push(elem);
             });
+        }).catch(err => {
+            console.log(err)
         });
         promisesArr.forEach((promiseArr, index) => {
-            axios.all(promiseArr).then(responses => {
+            axios.all(promiseArr, { timeout: 1000 }).then(responses => {
                 let result = [];
                 responses.forEach(response => {
                     if (response.data.Answer) {
@@ -86,7 +73,6 @@ export class DnsSection extends Component {
                         });
                     }
                 });
-
                 this.setState(prevState => {
                     const records = [...prevState.records]
                     records[index] = result
@@ -99,7 +85,6 @@ export class DnsSection extends Component {
             this.setState({
                 loading: false
             })
-
         });
     }
 
@@ -115,59 +100,12 @@ export class DnsSection extends Component {
     render() {
         return (
             <div className="dns-section">
-                <div>
-                    <Button className="dns-header" onClick={() => this.toggle(0)}>A-Records {this.state.isOpen[0] ? closeIcon : openIcon}</Button>
-                    <Collapse isOpen={this.state.isOpen[0]}>
-                        <Table>
-                            <tbody>
-                                {
-                                    this.state.loading ? <tr><td>Loading...</td></tr> : (
-                                        this.state.records[0].length == 0 ? <tr><td>No records found</td></tr> : (
-                                            this.state.records[0].map((res, i) => (
-                                                <DnsRow data={res} key={i} />
-                                            ))
-                                        )
-                                    )
-                                }
-                            </tbody>
-                        </Table>
-                    </Collapse>
-                </div>
-                <div>
-                    <Button className="dns-header" onClick={() => this.toggle(1)}>MX-Records {this.state.isOpen[1] ? closeIcon : openIcon}</Button>
-                    <Collapse isOpen={this.state.isOpen[1]}>
-                        <Table>
-                            <tbody>
-                                {
-                                    this.state.loading ? <tr><td>Loading...</td></tr> : (
-                                        this.state.records[1].length == 0 ? <tr><td>No records found</td></tr> : (
-                                            this.state.records[1].map((res, i) => (
-                                                <DnsRow data={res} key={i} />
-                                            ))
-                                        )
-                                    )
-                                }
-                            </tbody>
-                        </Table>
-                    </Collapse>
-                </div>
-                <div>
-                    <Button className="dns-header" onClick={() => this.toggle(2)}>TXT-Records {this.state.isOpen[2] ? closeIcon : openIcon}</Button>
-                    <Collapse isOpen={this.state.isOpen[2]}>
-                        <Table>
-                            <tbody>
-                                {
-                                    this.state.loading ? <tr><td>Loading...</td></tr> : (
-                                        this.state.records[2].length == 0 ? <tr><td>No records found</td></tr> : (
-                                            this.state.records[2].map((res, i) => (
-                                                <DnsRow data={res} key={i} />
-                                            ))
-                                        )
-                                    )
-                                }
-                            </tbody>
-                        </Table>
-                    </Collapse>
+                <div> 
+                    {
+                        this.state.records.map((res, i) => (
+                            <DnsRecordSection data={res} loading={this.state.loading} section={["NS-records", "A-records", "MX-records", "TXT-records"][i]} key={i} />
+                        ))
+                    }   
                 </div>
             </div>
 

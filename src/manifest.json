@@ -1,5 +1,6 @@
 {
   "name": "DNS Viewer",
+  "version": "1.0",
   "background": {
     "page": "background.html"
   },
